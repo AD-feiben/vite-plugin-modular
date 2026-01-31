@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Vite Plugin Modular CLI Config",
+  "description": "Configuration for Vite Plugin Modular CLI Tool",
+  "type": "object",
+  "properties": {
+    "templateDir": {
+      "type": "string",
+      "description": "模板目录路径，默认值为 'templates'",
+      "default": "templates"
+    },
+    "jsonIndent": {
+      "type": "integer",
+      "description": "JSON文件缩进空格数，默认自动从项目中检测",
+      "minimum": 1,
+      "maximum": 8
+    }
+  },
+  "additionalProperties": false
+}

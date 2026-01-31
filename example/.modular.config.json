@@ -1,0 +1,36 @@
+// ⚠️  警告：此文件由 Vite Plugin Modular CLI 自动生成，请勿手动修改
+// ⚠️  手动修改可能导致配置失效或功能异常
+// ⚠️  请使用 vmod config 命令来修改模块配置
+
+{
+  "module1": {
+    "name": "module1",
+    "sourceDir": "module1",
+    "entry": "main.ts",
+    "title": "Module 1 Example",
+    "outputDir": "module1",
+    "environments": ["dev", "prod", "test"],
+    "define": {
+      "apiUrl": "https://api.example.com/module1",
+      "debugMode": true,
+      "maxItems": 100,
+      "appInfo.name": "Module 1 App",
+      "appInfo.version": "1.0.0"
+    }
+  },
+  "module2": {
+    "name": "module2",
+    "sourceDir": "module2",
+    "entry": "main.ts",
+    "title": "Module 2 Example",
+    "outputDir": "module2",
+    "environments": ["dev", "prod", "test"],
+    "define": {
+      "apiUrl": "https://api.example.com/module2",
+      "debugMode": false,
+      "maxItems": 50,
+      "appInfo.name": "Module 2 App",
+      "appInfo.version": "2.0.0"
+    }
+  }
+}
