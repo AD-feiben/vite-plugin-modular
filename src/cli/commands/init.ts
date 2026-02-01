@@ -71,7 +71,7 @@ export async function initCommand(): Promise<void> {
       const configContent = `// Vite Plugin Modular CLI 配置文件
 // IDE会自动提供智能提示
 // 使用 ESM 格式
-import { defineVmodConfig } from '@ad-feiben/vite-plugin-modular/config';
+import { defineVmodConfig } from '@ad-feiben/vite-plugin-modular';
 
 export default defineVmodConfig({
   templateDir: "${templateDir}",

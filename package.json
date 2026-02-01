@@ -2,7 +2,7 @@
   "name": "@ad-feiben/vite-plugin-modular",
   "author": "AD-feiben",
   "homepage": "https://github.com/AD-feiben/vite-plugin-modular",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "files": [
     "dist"
@@ -42,7 +42,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && chmod +x dist/cli.cjs",
+    "build": "rm -rf dist && vite build && tsc && chmod +x dist/cli.cjs",
+    "build:types": "tsc --emitDeclarationOnly",
     "preview": "vite preview",
     "test": "vitest"
   },
