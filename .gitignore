@@ -25,3 +25,6 @@ dist-ssr
 
 # Marketing materials (not to be committed to git)
 marketing/
+
+# Trae IDE files
+.trae/
