@@ -167,7 +167,7 @@ export default function VitePluginModular(): Plugin {
         const commentAfter = beforeMatch.lastIndexOf("-->");
 
         // 如果不在注释中（最后一个注释结束位置在最后一个注释开始位置之前）
-        if (commentAfter > commentBefore) {
+        if (commentBefore === -1 || commentAfter > commentBefore) {
           const src = match[1];
           // 检查是否为外部资源（以 http:// 或 https:// 开头）
           if (!src.startsWith("http://") && !src.startsWith("https://")) {
