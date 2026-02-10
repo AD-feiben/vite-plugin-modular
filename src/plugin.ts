@@ -151,10 +151,16 @@ export default function VitePluginModular(): Plugin {
       );
 
       // 替换入口脚本
+      const base = currentModule.base || "/";
+      const processedBase = base.startsWith("/") ? base : `/${base}`;
+      const normalizedBase = processedBase.endsWith("/")
+        ? processedBase
+        : `${processedBase}/`;
       const fullEntryPath = getFullEntryPath(
         currentModule.sourceDir,
         currentModule.entry,
       );
+      const entryPathWithBase = normalizedBase + fullEntryPath;
 
       // 替换入口脚本，只替换非注释的本地资源
       let lastIndex = 0;
@@ -180,7 +186,7 @@ export default function VitePluginModular(): Plugin {
               // 替换为模块入口
               newHtml +=
                 updatedHtml.substring(lastIndex, match.index) +
-                `<script type="module" src="/${fullEntryPath}"></script>`;
+                `<script type="module" src="${entryPathWithBase}"></script>`;
               lastIndex = scriptRegex.lastIndex;
               continue;
             }
