@@ -7,6 +7,7 @@ export interface ModuleConfig {
   outputDir: string;
   environments: string[];
   define: Record<string, any>;
+  base: string;
 }
 
 // 模块化配置接口

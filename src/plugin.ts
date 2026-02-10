@@ -12,6 +12,7 @@ interface ModuleConfig {
   outputDir: string;
   environments: string[];
   define: Record<string, any>;
+  base: string;
 }
 
 // 模块化配置接口
@@ -112,8 +113,11 @@ export default function VitePluginModular(): Plugin {
       // 配置环境变量目录
       // 获取用户的 outDir 配置，默认为 "dist"
       const userOutDir = config.build?.outDir || "dist";
+      const moduleBase = currentModule.base || "/";
+      const base = moduleBase.startsWith("/") ? moduleBase : `/${moduleBase}`;
       const updatedConfig = {
         ...config,
+        base: base,
         envDir: "env",
         build: {
           ...config.build,
@@ -176,7 +180,7 @@ export default function VitePluginModular(): Plugin {
               // 替换为模块入口
               newHtml +=
                 updatedHtml.substring(lastIndex, match.index) +
-                `<script type="module" src="${fullEntryPath}"></script>`;
+                `<script type="module" src="/${fullEntryPath}"></script>`;
               lastIndex = scriptRegex.lastIndex;
               continue;
             }

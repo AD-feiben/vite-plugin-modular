@@ -99,6 +99,14 @@ export async function addCommand(): Promise<void> {
       default: moduleName,
     });
 
+    // 询问 base 路径，默认值为 /
+    const { base } = await prompt({
+      type: "input",
+      name: "base",
+      message: "请输入基础路径（默认: /）：",
+      default: "/",
+    });
+
     // 环境列表，初始包含dev和prod
     const environments: string[] = ["dev", "prod"];
     let addMore = true;
@@ -184,6 +192,7 @@ export async function addCommand(): Promise<void> {
       outputDir,
       environments,
       define,
+      base,
     };
 
     // 更新模块化配置
@@ -234,6 +243,7 @@ export async function addCommand(): Promise<void> {
     logger.successMessage(`模块 ${moduleName} 创建成功`);
     logger.infoMessage(`目录: src/modules/${sourceDir}`);
     logger.infoMessage(`入口: ${entry}`);
+    logger.infoMessage(`基础路径: ${base}`);
     logger.infoMessage(`环境: ${environments.join(", ")}`);
     // 合并所有命令并打印
     const commands = [`serve:${moduleName}`, `build:${moduleName}`];
