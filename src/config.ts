@@ -5,7 +5,7 @@
  * 为配置文件提供智能类型提示
  */
 
-import { CliConfig } from './utils';
+import { CliConfig } from './utils'
 
 /**
  * 定义 Vite Plugin Modular CLI 配置
@@ -37,13 +37,11 @@ import { CliConfig } from './utils';
  *   jsonIndent: 2
  * }));
  */
-export function defineVmodConfig(
-  config: CliConfig | (() => CliConfig)
-): CliConfig {
+export function defineVmodConfig(config: CliConfig | (() => CliConfig)): CliConfig {
   if (typeof config === 'function') {
-    return config();
+    return config()
   }
-  return config;
+  return config
 }
 
 /**
@@ -51,4 +49,4 @@ export function defineVmodConfig(
  *
  * 用于 TypeScript 类型引用
  */
-export type VmodConfig = CliConfig;
+export type VmodConfig = CliConfig

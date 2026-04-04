@@ -1,22 +1,19 @@
-import { table } from "table";
-import { loadModularConfig, logger } from "../../utils";
+import { table } from 'table'
+import { logger } from '../../utils'
+import { getModuleList } from '../utils'
 
 export async function listCommand(): Promise<void> {
   try {
-    logger.commandStart("list");
+    logger.commandStart('list')
 
-    const modularConfig = loadModularConfig();
-    const modules = Object.values(modularConfig);
+    const { modules, passed } = getModuleList()
 
-    if (modules.length === 0) {
-      logger.errorMessage("没有找到任何模块，请先创建模块");
-      return;
+    if (!passed || !modules.length) {
+      return
     }
 
     // 准备表格数据
-    const tableData = [
-      ["模块名称", "标题", "源码路径", "入口文件", "输出目录", "环境列表"],
-    ];
+    const tableData = [['模块名称', '标题', '源码路径', '入口文件', '输出目录', '环境列表']]
 
     modules.forEach((module) => {
       tableData.push([
@@ -25,16 +22,16 @@ export async function listCommand(): Promise<void> {
         `src/modules/${module.sourceDir}`,
         `${module.entry}`,
         `dist/${module.outputDir}`,
-        module.environments.join(", "),
-      ]);
-    });
+        module.environments.join(', ')
+      ])
+    })
 
     // 输出表格
-    console.log(table(tableData));
-    logger.successMessage(`共找到 ${modules.length} 个模块`);
+    console.log(table(tableData))
+    logger.successMessage(`共找到 ${modules.length} 个模块`)
 
-    logger.commandEnd("list");
+    logger.commandEnd('list')
   } catch (error) {
-    logger.errorMessage(`获取模块列表失败：${(error as Error).message}`);
+    logger.errorMessage(`获取模块列表失败：${(error as Error).message}`)
   }
 }
