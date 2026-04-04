@@ -207,15 +207,15 @@ export async function addCommand(): Promise<void> {
 
     // 添加命令到package.json
     packageJson.scripts[`serve:${moduleName}`] =
-      `vite --mode ${moduleName}-dev`;
+      `vite --mode ${moduleName}:dev`;
     packageJson.scripts[`build:${moduleName}`] =
-      `vite build --mode ${moduleName}-prod`;
+      `vite build --mode ${moduleName}:prod`;
 
     // 为额外环境添加build命令
     environments.forEach((env) => {
       if (env !== "dev" && env !== "prod") {
-        packageJson.scripts![`build:${moduleName}-${env}`] =
-          `vite build --mode ${moduleName}-${env}`;
+        packageJson.scripts![`build:${moduleName}:${env}`] =
+          `vite build --mode ${moduleName}:${env}`;
       }
     });
 
@@ -249,7 +249,7 @@ export async function addCommand(): Promise<void> {
     const commands = [`serve:${moduleName}`, `build:${moduleName}`];
     environments.forEach((env) => {
       if (env !== "dev" && env !== "prod") {
-        commands.push(`build:${moduleName}-${env}`);
+        commands.push(`build:${moduleName}:${env}`);
       }
     });
     logger.infoMessage(`命令: ${commands.join(", ")}`);

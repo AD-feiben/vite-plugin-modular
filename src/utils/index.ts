@@ -233,7 +233,7 @@ export function createEnvFile(moduleName: string, envName: string): void {
   if (!existsSync(envDir)) {
     mkdirSync(envDir, { recursive: true });
   }
-  const envPath = join(envDir, `.env.${moduleName}-${envName}`);
+  const envPath = join(envDir, `.env.${moduleName}:${envName}`);
   writeFileSync(
     envPath,
     "# Environment variables for module: " +
@@ -247,7 +247,7 @@ export function createEnvFile(moduleName: string, envName: string): void {
 
 // 删除env文件
 export function deleteEnvFile(moduleName: string, envName: string): void {
-  const envPath = join(process.cwd(), "env", `.env.${moduleName}-${envName}`);
+  const envPath = join(process.cwd(), "env", `.env.${moduleName}:${envName}`);
   if (existsSync(envPath)) {
     rmSync(envPath);
   }

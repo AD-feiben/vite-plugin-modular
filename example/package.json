@@ -9,7 +9,10 @@
     "build:module1": "vite build --mode module1-prod",
     "build:module2": "vite build --mode module2-prod",
     "build:module1-test": "vite build --mode module1-test",
-    "build:module2-test": "vite build --mode module2-test"
+    "build:module2-test": "vite build --mode module2-test",
+    "serve:test-aaa": "vite --mode test-aaa:dev",
+    "build:test-aaa": "vite build --mode test-aaa:prod",
+    "build:test-aaa:sit-a": "vite build --mode test-aaa:sit-a"
   },
   "devDependencies": {
     "typescript": "^5.6.2",

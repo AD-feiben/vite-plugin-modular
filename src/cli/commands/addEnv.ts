@@ -95,8 +95,8 @@ export async function addEnvCommand(): Promise<void> {
       createEnvFile(moduleName, env);
 
       // 添加build命令
-      packageJson.scripts![`build:${moduleName}-${env}`] =
-        `vite build --mode ${moduleName}-${env}`;
+      packageJson.scripts![`build:${moduleName}:${env}`] =
+        `vite build --mode ${moduleName}:${env}`;
     });
 
     // 保存package.json
@@ -107,7 +107,7 @@ export async function addEnvCommand(): Promise<void> {
     logger.infoMessage(`当前环境: ${currentEnvironments.join(", ")}`);
     logger.infoMessage(`新增环境: ${newEnvironments.join(", ")}`);
     newEnvironments.forEach((env) => {
-      logger.infoMessage(`命令: build:${moduleName}-${env}`);
+      logger.infoMessage(`命令: build:${moduleName}:${env}`);
     });
   } catch (error) {
     logger.errorMessage(`添加环境失败：${(error as Error).message}`);

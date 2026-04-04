@@ -2,10 +2,11 @@
   "name": "@ad-feiben/vite-plugin-modular",
   "author": "AD-feiben",
   "homepage": "https://github.com/AD-feiben/vite-plugin-modular",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "assets"
   ],
   "main": "./dist/plugin.cjs",
   "module": "./dist/plugin.js",

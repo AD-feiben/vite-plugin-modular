@@ -38,13 +38,37 @@ function getFullEntryPath(sourceDir: string, entry: string): string {
 }
 
 // 模式解析函数
-function parseMode(mode: string): {
-  moduleName: string | null;
-  envName: string | null;
-} {
-  const match = mode.match(/^([^-]+)-(.*)$/);
-  if (match) {
-    return { moduleName: match[1], envName: match[2] };
+function parseMode(
+  mode: string,
+  moduleNames: string[],
+): { moduleName: string | null; envName: string | null } {
+  const sortedNames = [...moduleNames].sort((a, b) => b.length - a.length);
+
+  for (const name of sortedNames) {
+    if (mode.startsWith(name + ":")) {
+      return {
+        moduleName: name,
+        envName: mode.substring(name.length + 1),
+      };
+    }
+  }
+
+  return parseModeLegacy(mode, moduleNames);
+}
+
+// 兼容老版本 `-` 分隔符
+function parseModeLegacy(
+  mode: string,
+  moduleNames: string[],
+): { moduleName: string | null; envName: string | null } {
+  const sortedNames = [...moduleNames].sort((a, b) => b.length - a.length);
+  for (const name of sortedNames) {
+    if (mode.startsWith(name + "-")) {
+      return {
+        moduleName: name,
+        envName: mode.substring(name.length + 1),
+      };
+    }
   }
   return { moduleName: null, envName: null };
 }
@@ -86,22 +110,24 @@ export default function VitePluginModular(): Plugin {
     name: "@ad-feiben/vite-plugin-modular",
 
     config(config, env) {
-      // 解析模式
-      const { moduleName } = parseMode(env.mode);
-      if (!moduleName) {
-        console.warn(
-          "Mode format is invalid, expected: [moduleName]-[envName]",
-        );
-        return config;
-      }
-
       // 加载模块化配置
       const modularConfig = loadModularConfig(config.root || process.cwd());
 
       // 校验源码路径唯一性
       validateSourceDirs(modularConfig);
 
+      // 解析模式
+      const moduleNames = Object.keys(modularConfig);
+      const { moduleName } = parseMode(env.mode, moduleNames);
+
       // 获取当前模块配置
+      if (!moduleName) {
+        console.warn(
+          "Mode format is invalid, expected: [moduleName]:[envName] or [moduleName]-[envName]",
+        );
+        return config;
+      }
+
       currentModule = modularConfig[moduleName];
       if (!currentModule) {
         console.warn(
