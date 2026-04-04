@@ -12,6 +12,7 @@ interface ModuleConfig {
   outputDir: string;
   environments: string[];
   define: Record<string, any>;
+  base: string;
 }
 
 // 模块化配置接口
@@ -37,13 +38,37 @@ function getFullEntryPath(sourceDir: string, entry: string): string {
 }
 
 // 模式解析函数
-function parseMode(mode: string): {
-  moduleName: string | null;
-  envName: string | null;
-} {
-  const match = mode.match(/^([^-]+)-(.*)$/);
-  if (match) {
-    return { moduleName: match[1], envName: match[2] };
+function parseMode(
+  mode: string,
+  moduleNames: string[],
+): { moduleName: string | null; envName: string | null } {
+  const sortedNames = [...moduleNames].sort((a, b) => b.length - a.length);
+
+  for (const name of sortedNames) {
+    if (mode.startsWith(name + ":")) {
+      return {
+        moduleName: name,
+        envName: mode.substring(name.length + 1),
+      };
+    }
+  }
+
+  return parseModeLegacy(mode, moduleNames);
+}
+
+// 兼容老版本 `-` 分隔符
+function parseModeLegacy(
+  mode: string,
+  moduleNames: string[],
+): { moduleName: string | null; envName: string | null } {
+  const sortedNames = [...moduleNames].sort((a, b) => b.length - a.length);
+  for (const name of sortedNames) {
+    if (mode.startsWith(name + "-")) {
+      return {
+        moduleName: name,
+        envName: mode.substring(name.length + 1),
+      };
+    }
   }
   return { moduleName: null, envName: null };
 }
@@ -85,22 +110,24 @@ export default function VitePluginModular(): Plugin {
     name: "@ad-feiben/vite-plugin-modular",
 
     config(config, env) {
-      // 解析模式
-      const { moduleName } = parseMode(env.mode);
-      if (!moduleName) {
-        console.warn(
-          "Mode format is invalid, expected: [moduleName]-[envName]",
-        );
-        return config;
-      }
-
       // 加载模块化配置
       const modularConfig = loadModularConfig(config.root || process.cwd());
 
       // 校验源码路径唯一性
       validateSourceDirs(modularConfig);
 
+      // 解析模式
+      const moduleNames = Object.keys(modularConfig);
+      const { moduleName } = parseMode(env.mode, moduleNames);
+
       // 获取当前模块配置
+      if (!moduleName) {
+        console.warn(
+          "Mode format is invalid, expected: [moduleName]:[envName] or [moduleName]-[envName]",
+        );
+        return config;
+      }
+
       currentModule = modularConfig[moduleName];
       if (!currentModule) {
         console.warn(
@@ -112,8 +139,11 @@ export default function VitePluginModular(): Plugin {
       // 配置环境变量目录
       // 获取用户的 outDir 配置，默认为 "dist"
       const userOutDir = config.build?.outDir || "dist";
+      const moduleBase = currentModule.base || "/";
+      const base = moduleBase.startsWith("/") ? moduleBase : `/${moduleBase}`;
       const updatedConfig = {
         ...config,
+        base: base,
         envDir: "env",
         build: {
           ...config.build,
@@ -147,10 +177,16 @@ export default function VitePluginModular(): Plugin {
       );
 
       // 替换入口脚本
+      const base = currentModule.base || "/";
+      const processedBase = base.startsWith("/") ? base : `/${base}`;
+      const normalizedBase = processedBase.endsWith("/")
+        ? processedBase
+        : `${processedBase}/`;
       const fullEntryPath = getFullEntryPath(
         currentModule.sourceDir,
         currentModule.entry,
       );
+      const entryPathWithBase = normalizedBase + fullEntryPath;
 
       // 替换入口脚本，只替换非注释的本地资源
       let lastIndex = 0;
@@ -167,7 +203,7 @@ export default function VitePluginModular(): Plugin {
         const commentAfter = beforeMatch.lastIndexOf("-->");
 
         // 如果不在注释中（最后一个注释结束位置在最后一个注释开始位置之前）
-        if (commentAfter > commentBefore) {
+        if (commentBefore === -1 || commentAfter > commentBefore) {
           const src = match[1];
           // 检查是否为外部资源（以 http:// 或 https:// 开头）
           if (!src.startsWith("http://") && !src.startsWith("https://")) {
@@ -176,7 +212,7 @@ export default function VitePluginModular(): Plugin {
               // 替换为模块入口
               newHtml +=
                 updatedHtml.substring(lastIndex, match.index) +
-                `<script type="module" src="${fullEntryPath}"></script>`;
+                `<script type="module" src="${entryPathWithBase}"></script>`;
               lastIndex = scriptRegex.lastIndex;
               continue;
             }

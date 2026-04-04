@@ -80,7 +80,7 @@ export async function deleteCommand(moduleName?: string): Promise<void> {
       // 删除额外环境的build命令
       moduleConfig.environments.forEach((env) => {
         if (env !== "dev" && env !== "prod") {
-          delete packageJson.scripts![`build:${selectedModuleName}-${env}`];
+          delete packageJson.scripts![`build:${selectedModuleName}:${env}`];
         }
       });
 

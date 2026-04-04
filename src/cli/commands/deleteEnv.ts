@@ -83,7 +83,7 @@ export async function deleteEnvCommand(): Promise<void> {
 
     // 删除相关命令
     if (packageJson.scripts) {
-      delete packageJson.scripts[`build:${moduleName}-${envName}`];
+      delete packageJson.scripts[`build:${moduleName}:${envName}`];
       savePackageJson(packageJson, cliConfig.jsonIndent);
     }
 

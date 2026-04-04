@@ -48,6 +48,7 @@ export async function configCommand(): Promise<void> {
           "修改源码路径",
           "修改入口文件",
           "修改输出目录",
+          "修改基础路径",
           "管理环境",
           "管理共享环境变量",
           "保存并退出",
@@ -112,8 +113,23 @@ export async function configCommand(): Promise<void> {
               message: "请输入新的输出目录：",
               default: updatedConfig.outputDir,
             });
+
             updatedConfig.outputDir = outputDir;
             logger.successMessage(`已更新输出目录为: ${outputDir}`);
+          }
+          break;
+
+        case "修改基础路径":
+          {
+            const { base } = await prompt({
+              type: "input",
+              name: "base",
+              message: "请输入新的基础路径：",
+              default: updatedConfig.base || "/",
+            });
+
+            updatedConfig.base = base;
+            logger.successMessage(`已更新基础路径为: ${base}`);
           }
           break;
 

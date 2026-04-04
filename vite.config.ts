@@ -28,6 +28,7 @@ export default defineConfig({
           assetFileNames: "assets/[name][extname]",
           chunkFileNames: "[name].js",
           entryFileNames: "[name].js",
+          exports: "named",
         },
         {
           format: "cjs",
@@ -42,6 +43,7 @@ export default defineConfig({
           assetFileNames: "assets/[name][extname]",
           chunkFileNames: "[name].cjs",
           entryFileNames: "[name].cjs",
+          exports: "named",
         },
       ],
     },

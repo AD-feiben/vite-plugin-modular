@@ -2,10 +2,11 @@
   "name": "@ad-feiben/vite-plugin-modular",
   "author": "AD-feiben",
   "homepage": "https://github.com/AD-feiben/vite-plugin-modular",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "assets"
   ],
   "main": "./dist/plugin.cjs",
   "module": "./dist/plugin.js",
@@ -54,9 +55,22 @@
     "table": "^6.9.0"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^12.0.2",
     "@types/node": "^22.0.0",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
+    "semantic-release": "^24.2.9",
     "typescript": "~5.9.3",
     "vite": "^5.4.8",
     "vitest": "^4.0.18"
+  },
+  "release": {
+    "branches": ["release"],
+    "plugins": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ]
   }
 }
