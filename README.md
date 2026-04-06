@@ -218,18 +218,23 @@ const appVersion = import.meta.env.VITE_APP_VERSION
 
 ```
 vite-plugin-modular/
-├── dist/             # 构建输出
+├── .husky/           # Git hooks
+├── assets/           # 静态资源（CLI 效果截图等）
+├── example/          # 示例项目
+│   ├── env/          # 环境配置文件
+│   ├── src/modules/  # 示例模块目录
+│   └── templates/    # 模块模板
+├── schemas/          # JSON Schema 配置
 ├── src/              # 源码
 │   ├── cli/          # 命令行工具
-│   │   └── commands/ # 命令实现
+│   │   ├── commands/ # 命令实现（add, delete, addEnv 等）
+│   │   └── utils/    # CLI 工具函数
 │   ├── types/        # 类型定义
-│   ├── utils/        # 工具函数
-│   ├── config.ts     # 配置处理
-│   └── plugin.ts     # 插件核心
-├── schemas/          # JSON Schema
-├── public/           # 静态资源
+│   └── utils/        # 工具函数（日志等）
 ├── tests/            # 测试文件
-└── example/          # 示例项目
+├── package.json      # 项目配置
+├── vite.config.ts    # Vite 配置
+└── tsconfig.json     # TypeScript 配置
 ```
 
 ## 🚧 开发指南
@@ -293,15 +298,6 @@ npm run dev:module1-dev
 1. 查看 [示例项目](example/) 了解使用方法
 2. 检查 [配置说明](#-配置说明) 确认配置正确
 3. 提交 [Issue](https://github.com/AD-feiben/vite-plugin-modular/issues) 报告问题
-
-## 📝 更新日志
-
-### v0.0.1
-- ✨ 初始化项目
-- 🚀 实现核心模块化功能
-- 🛠 开发命令行工具
-- 🎨 设计插件 logo
-- 📖 编写文档
 
 ## 🌟 鸣谢
 

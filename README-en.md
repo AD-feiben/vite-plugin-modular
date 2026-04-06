@@ -190,7 +190,7 @@ const apiUrl = import.meta.env.VITE_API_URL
 const appVersion = import.meta.env.VITE_APP_VERSION
 ```
 
-### 3. Smart Command Generation
+### 2. Smart Command Generation
 
 When creating a module, automatically generate corresponding npm script commands:
 
@@ -207,7 +207,7 @@ When creating a module, automatically generate corresponding npm script commands
 }
 ```
 
-### 4. Optimized User Experience
+### 3. Optimized User Experience
 
 - **Colorful Logs**: Colorful terminal output for better readability
 - **Smart Hints**: Intelligent prompts during CLI interactions
@@ -218,18 +218,23 @@ When creating a module, automatically generate corresponding npm script commands
 
 ```
 vite-plugin-modular/
-├── dist/             # Build output
+├── .husky/           # Git hooks
+├── assets/           # Static assets (CLI screenshots, etc.)
+├── example/          # Example project
+│   ├── env/          # Environment configuration files
+│   ├── src/modules/  # Example modules directory
+│   └── templates/    # Module templates
+├── schemas/          # JSON Schema configuration
 ├── src/              # Source code
 │   ├── cli/          # CLI tools
-│   │   └── commands/ # Command implementations
+│   │   ├── commands/ # Command implementations (add, delete, addEnv, etc.)
+│   │   └── utils/    # CLI utilities
 │   ├── types/        # Type definitions
-│   ├── utils/        # Utility functions
-│   ├── config.ts     # Configuration handling
-│   └── plugin.ts     # Plugin core
-├── schemas/          # JSON Schema
-├── public/           # Static assets
+│   └── utils/        # Utility functions (logging, etc.)
 ├── tests/            # Test files
-└── example/          # Example project
+├── package.json      # Project configuration
+├── vite.config.ts    # Vite configuration
+└── tsconfig.json     # TypeScript configuration
 ```
 
 ## 🚧 Development Guide
